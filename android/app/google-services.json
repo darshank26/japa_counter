@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676145484687",
+    "project_id": "japa-counter",
+    "storage_bucket": "japa-counter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676145484687:android:24a1b1f75771f218a571fa",
+        "android_client_info": {
+          "package_name": "com.darshankomu.japa_counter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-qhGFYEpFl6gIcl95WEG7STtGQpM2vHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
