@@ -10,10 +10,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 import 'package:japa_counter/model/counter_model.dart';
+import 'package:japa_counter/screens/addCounter.dart';
 import 'package:japa_counter/screens/homescreen.dart';
 import 'package:japa_counter/utils/constants.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'AdHelper/adshelper.dart';
 
@@ -112,9 +114,9 @@ class _MyAppState extends State<MyApp> {
     _handleConsent();
     // _handleSendNotification();
     // showAd();
-
-
   }
+
+
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
@@ -197,12 +199,39 @@ class IntroSplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<IntroSplashScreen> {
+
+
+
+
+  late SharedPreferences result;
+
+
+
+  _loadLastSelectedValue() async {
+
+    result = await SharedPreferences.getInstance();
+
+
+  }
+
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds:5 ), ()=>
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen())));
+    _loadLastSelectedValue();
+    Timer(Duration(seconds:5 ), (){
+      if((result.getString('CounterName') ??  null )== null)
+        {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCounter()));
+        }else
+          {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));};
+
+          });
+
+
   }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

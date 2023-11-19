@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:japa_counter/Boxes/boxes.dart';
 import 'package:japa_counter/model/counter_model.dart';
+import 'package:japa_counter/screens/homescreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../AdHelper/adshelper.dart';
@@ -39,6 +40,7 @@ class _AddCounterState extends State<AddCounter> {
   int selectedValue = -1; // Initial value for the selected radio button
   var checkEdit = -1;
   late CounterModel counterModel;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
@@ -71,7 +73,7 @@ class _AddCounterState extends State<AddCounter> {
   }
 
   _loadLastSelectedValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+     prefs = await SharedPreferences.getInstance();
     setState(() {
       selectedValue = prefs.getInt('selectedValue') ?? -1;
       var cN = prefs.getString('CounterName');
@@ -86,7 +88,7 @@ class _AddCounterState extends State<AddCounter> {
 
 
   _saveSelectedValue(int value,String cName,String cValue ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     prefs.setInt('selectedValue', value);
     prefs.setString('CounterName', cName);
     prefs.setString('CounterValue', cValue);
@@ -109,7 +111,15 @@ class _AddCounterState extends State<AddCounter> {
               padding: const EdgeInsets.only(left:20.0),
               child: IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  // setState(() {});
+
+                  // Navigator.push( context, MaterialPageRoute( builder: (context) => HomeScreen()), ).then((value) => setState(() {}));
+
+                }
+
               ),
             ),
             backgroundColor: Colors.orange,
@@ -126,7 +136,7 @@ class _AddCounterState extends State<AddCounter> {
               decoration: InputDecoration
                 (
                   labelText: "Counter Name",
-                  hintText: "Counter Name",
+                  hintText: "Ex. Counter A",
                 labelStyle: TextStyle(
                   color: Colors.orange,
                   fontWeight: FontWeight.w500
@@ -134,6 +144,7 @@ class _AddCounterState extends State<AddCounter> {
                 hintStyle: TextStyle(
                   color: Colors.grey.shade300,
                 ),
+
                 focusedBorder: OutlineInputBorder(
                   borderSide:  BorderSide(color: Colors.orange),
                 ),
@@ -157,7 +168,7 @@ class _AddCounterState extends State<AddCounter> {
               decoration: InputDecoration
                 (
                 labelText: "Counter Value",
-                hintText: "Counter Value",
+                hintText: "Ex. 108",
                 labelStyle: TextStyle(
                     color: Colors.orange,
                     fontWeight: FontWeight.w500
@@ -189,7 +200,11 @@ class _AddCounterState extends State<AddCounter> {
                       style: ElevatedButton.styleFrom(
                           primary: Colors.orange,
                           shadowColor: Colors.grey),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: ()  {
+
+                        Navigator.pop(context, prefs);
+
+                        },
                        child: Text("Cancel",style: TextStyle(fontSize:16.0,color: Colors.white,fontWeight: FontWeight.w600,letterSpacing: 0.8),)),
                 ),
 
@@ -306,6 +321,14 @@ class _AddCounterState extends State<AddCounter> {
                               print(data[index].counterValue.toString());
 
                               _saveSelectedValue(selectedValue,data[index].counterName.toString(),data[index].counterValue.toString());
+
+                              // Navigator.pop(context);
+
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())).then((value) {
+                                setState(() {
+                                  Navigator.pop(context);
+                                });
+                              });
 
                             });
                           },

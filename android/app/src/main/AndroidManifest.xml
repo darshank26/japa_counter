@@ -8,7 +8,7 @@
 
 
     <application
-        android:label="japa_counter"
+        android:label="Japa Counter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
